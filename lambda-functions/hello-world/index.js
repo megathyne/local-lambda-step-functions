@@ -1,10 +1,10 @@
 exports.handler = async (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
-    
+
     // Extract input data
-    const name = event.name || 'World';
-    const message = event.message || 'Hello';
-    
+    const name = event.name && event.name.trim() !== '' ? event.name : 'World';
+    const message = event.message && event.message.trim() !== '' ? event.message : 'Hello';
+
     // Process the input
     const response = {
         statusCode: 200,
@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
             processed: true
         }
     };
-    
+
     console.log('Returning response:', JSON.stringify(response, null, 2));
     return response;
 };

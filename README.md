@@ -46,6 +46,7 @@ local-stack/
 - jq (for JSON processing)
 - curl
 - Node.js 18+ (for Lambda function development)
+- npm (for testing dependencies)
 
 ### 1. Start LocalStack
 
@@ -74,11 +75,65 @@ This script will:
 
 This will test both individual Lambda functions and the complete Step Functions workflow.
 
-### 4. Clean Up
+### 4. Run Tests
+
+```bash
+# Install test dependencies
+make install
+
+# Run all tests
+make test-all
+
+# Or run specific test types
+make test-unit        # Unit tests only
+make test-integration # Integration tests (requires LocalStack)
+make test-e2e         # End-to-end tests (requires LocalStack)
+```
+
+### 5. Clean Up
 
 ```bash
 ./scripts/cleanup.sh
 ```
+
+## 🧪 Testing
+
+This project includes a comprehensive testing suite with three levels of testing:
+
+### Test Types
+
+1. **Unit Tests** - Test individual Lambda functions in isolation
+2. **Integration Tests** - Test Lambda functions and Step Functions with LocalStack
+3. **End-to-End Tests** - Test complete workflow execution
+
+### Quick Test Commands
+
+```bash
+# Install test dependencies
+make install
+
+# Run all available tests
+make test-all
+
+# Run specific test types
+make test-unit        # Unit tests only (fast, no dependencies)
+make test-integration # Integration tests (requires LocalStack)
+make test-e2e         # End-to-end tests (requires LocalStack)
+
+# Run with coverage
+make test-coverage
+
+# Run linting
+make lint
+```
+
+### Test Requirements
+
+- **Unit Tests**: No external dependencies, run anywhere
+- **Integration Tests**: Requires LocalStack running and resources deployed
+- **End-to-End Tests**: Requires LocalStack running and resources deployed
+
+For detailed testing information, see [TESTING.md](TESTING.md).
 
 ## 🔧 Detailed Usage
 
@@ -226,6 +281,25 @@ Feel free to extend this POC with:
 - Error handling scenarios
 - Performance testing
 - Integration with other AWS services
+
+### Development Workflow
+
+1. **Make changes** to Lambda functions or Step Functions definition
+2. **Run unit tests** frequently: `make test-unit`
+3. **Start LocalStack** and deploy: `make start && make deploy`
+4. **Run integration tests**: `make test-integration`
+5. **Run end-to-end tests**: `make test-e2e`
+6. **Check coverage**: `make test-coverage`
+7. **Run linting**: `make lint`
+8. **Commit changes** when all tests pass
+
+### CI/CD
+
+The project includes GitHub Actions workflows that automatically:
+- Run unit tests on every push/PR
+- Run integration and e2e tests with LocalStack
+- Generate coverage reports
+- Provide test summaries
 
 ## 📄 License
 
